@@ -10,14 +10,10 @@
         <attr name="border_end_angle" format="float" />
         <attr name="offset_angle" format="float" />
         <attr name="thumb_size" format="dimension" />
-        <attr name="start_thumb_size" format="dimension" />
-        <attr name="end_thumb_size" format="dimension" />
-        <attr name="start_thumb_image" format="reference" />
-        <attr name="end_thumb_image" format="reference" />
+        <attr name="draw_thumb_size" format="dimension" />
         <attr name="start_thumb_color" format="color" />
         <attr name="end_thumb_color" format="color" />
         <attr name="arc_color" format="color" />
         <attr name="arc_dash_size" format="dimension" />
     </declare-styleable>
-
 </resources>

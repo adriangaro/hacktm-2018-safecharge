@@ -1,5 +1,7 @@
 package com.tmc.safecharge
 
+import android.annotation.SuppressLint
+import android.content.Context
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
@@ -9,7 +11,14 @@ import kotlinx.android.synthetic.main.activity_main.*
 import android.nfc.NdefMessage
 import android.nfc.NfcAdapter
 import android.content.Intent
-import kotlinx.android.synthetic.main.content_main.*
+import android.graphics.ColorFilter
+import android.graphics.PorterDuff
+import android.support.v4.content.ContextCompat
+import android.view.View
+import com.tmc.safecharge.widgets.CircularSliderRange
+import com.tmc.safecharge.widgets.ThumbEvent
+import kotlinx.android.synthetic.main.main_content.*
+import kotlinx.android.synthetic.main.battery_circle.*
 
 
 class MainActivity : AppCompatActivity() {
@@ -19,9 +28,44 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
 
-        fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show()
+
+        battery_full.background = battery_full.background.apply { setColorFilter(ContextCompat.getColor(this@MainActivity, R.color.colorPrimary), PorterDuff.Mode.MULTIPLY) }
+        battery_empty.background = battery_empty.background.apply { setColorFilter(ContextCompat.getColor(this@MainActivity, R.color.colorPrimary), PorterDuff.Mode.MULTIPLY) }
+        tip_icon.background = tip_icon.background.apply { setColorFilter(ContextCompat.getColor(this@MainActivity, R.color.colorPrimary), PorterDuff.Mode.MULTIPLY) }
+        top_icon.background = top_icon.background.apply { setColorFilter(ContextCompat.getColor(this@MainActivity, R.color.colorPrimary), PorterDuff.Mode.MULTIPLY) }
+
+        circular.onSliderRangeMovedListener = object : CircularSliderRange.OnSliderRangeMovedListener {
+            @SuppressLint("SetTextI18n")
+            override fun onStartSliderMoved(pos: Double) {
+                cur_perc.text = (pos * 100).toInt().toString() + "%"
+            }
+
+            @SuppressLint("SetTextI18n")
+            override fun onEndSliderMoved(pos: Double) {
+                cur_perc.text = (pos * 100).toInt().toString() + "%"
+            }
+
+            override fun onStartSliderEvent(event: ThumbEvent) {
+                cur_perc_layout.visibility = when(event) {
+                    ThumbEvent.THUMB_PRESSED ->View.VISIBLE
+                    ThumbEvent.THUMB_RELEASED ->View.INVISIBLE
+                }
+                circular.startThumbColor = ContextCompat.getColor(this@MainActivity, when(event) {
+                    ThumbEvent.THUMB_PRESSED -> R.color.colorAccent
+                    ThumbEvent.THUMB_RELEASED -> R.color.colorPrimary
+                })
+            }
+
+            override fun onEndSliderEvent(event: ThumbEvent) {
+                cur_perc_layout.visibility = when(event) {
+                    ThumbEvent.THUMB_PRESSED -> View.VISIBLE
+                    ThumbEvent.THUMB_RELEASED -> View.INVISIBLE
+                }
+                circular.endThumbColor = ContextCompat.getColor(this@MainActivity, when(event) {
+                    ThumbEvent.THUMB_PRESSED -> R.color.colorAccent
+                    ThumbEvent.THUMB_RELEASED -> R.color.colorPrimary
+                })
+            }
         }
     }
 
@@ -63,7 +107,8 @@ class MainActivity : AppCompatActivity() {
         // only one message sent during the beam
         val msg = rawMsgs[0] as NdefMessage
         // record 0 contains the MIME type, record 1 is the AAR, if present
-        text_nfc.text = String(msg.records[0].payload)
+//        v.text = String(msg.records[0].payload)
     }
+
 
 }

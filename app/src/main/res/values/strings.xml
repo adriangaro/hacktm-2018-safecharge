@@ -2,4 +2,8 @@
     <string name="app_name">SafeCharge</string>
     <string name="action_settings">Settings</string>
     <string name="Title">SafeCharge</string>
+    <string name="bat_perc_placeholder">45%</string>
+    <string name="phone_owner_text_placeholder">Daniel\'s Phone</string>
+    <string name="keep_at_max">Keep at max</string>
+    <string name="tip">The recommended parameters are 10% and 80%</string>
 </resources>

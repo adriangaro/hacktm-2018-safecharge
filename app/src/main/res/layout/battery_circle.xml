@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.tmc.safecharge.layouts.SquareConstraintLayout
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:range="http://schemas.android.com/apk/res-auto"
+         xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="50dp"
+        android:layout_marginTop="30dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView"
+        app:layout_constraintHorizontal_bias="0.0"
+        tools:showIn="@layout/main_content">
+    <com.tmc.safecharge.widgets.CircularSliderRange
+            android:id="@+id/circular"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="10dp"
+            range:arc_color="@color/colorPrimary"
+            range:arc_dash_size="5dp"
+            range:border_color="#ffffff"
+            range:border_thickness="2dp"
+            range:start_angle="45"
+            range:start_thumb_color="@color/colorPrimary"
+            range:end_angle="135"
+            range:end_thumb_color="@color/colorPrimary"
+            range:draw_thumb_size="10dp"
+            range:thumb_size="20dp"
+            range:border_start_angle="10"
+            range:border_end_angle="170"
+            range:offset_angle="180"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintVertical_bias="0.0" android:layout_marginBottom="8dp"/>
+    <View
+            android:layout_width="30dp"
+            android:layout_height="15dp"
+            android:id="@+id/battery_full"
+            android:background="@drawable/battery_full"
+            app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="4dp"
+            android:layout_marginBottom="8dp" app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent" android:layout_marginTop="8dp"/>
+    <View
+            android:layout_width="30dp"
+            android:layout_height="15dp"
+            android:id="@+id/battery_empty"
+            android:background="@drawable/battery_empty"
+            android:layout_marginBottom="8dp" app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent" android:layout_marginTop="8dp"
+            app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="4dp"/>
+    <com.github.florent37.shapeofview.shapes.CircleView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="40dp"
+            android:elevation="10dp"
+            android:id="@+id/circleView"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintVertical_bias="0.0">
+        <!-- YOUR CONTENT -->
+        <android.support.constraint.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:background="#ffffff"
+                android:id="@+id/circle_constraint">
+            <android.support.constraint.Guideline
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/center_guideline"
+                    app:layout_constraintGuide_percent="0.5"
+                    android:orientation="vertical"/>
+
+            <android.support.constraint.Guideline
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/upper_middle_guideline"
+                    app:layout_constraintGuide_percent="0.35"
+                    android:orientation="horizontal"/>
+            <android.support.constraint.Guideline
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/middle_guideline"
+                    app:layout_constraintGuide_percent="0.5"
+                    android:orientation="horizontal"/>
+            <android.support.constraint.Guideline
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/lower_middle_guideline"
+                    app:layout_constraintGuide_percent="0.65"
+                    android:orientation="horizontal"/>
+
+            <android.support.constraint.Guideline
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/top_guideline"
+                    app:layout_constraintGuide_percent="0.25"
+                    android:orientation="horizontal"/>
+
+            <android.support.constraint.Guideline
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/upper_top_guideline"
+                    app:layout_constraintGuide_percent="0.20"
+                    android:orientation="horizontal"/>
+
+            <android.support.constraint.Guideline
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/lower_top_guideline"
+                    app:layout_constraintGuide_percent="0.30"
+                    android:orientation="horizontal"/>
+
+            <android.support.constraint.ConstraintLayout
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    android:id="@+id/bat_perc_layout"
+                    app:layout_constraintTop_toTopOf="@+id/upper_middle_guideline"
+                    app:layout_constraintVertical_bias="0.5"
+                    app:layout_constraintBottom_toTopOf="@+id/lower_middle_guideline">
+                <android.support.v7.widget.AppCompatTextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:maxLines="1"
+                        app:autoSizeTextType="uniform"
+                        android:text="@string/bat_perc_placeholder"
+                        android:textColor="@color/colorPrimary"
+                        android:id="@+id/bat_perc"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintVertical_bias="0.0" app:layout_constraintStart_toStartOf="parent"
+                        android:layout_marginStart="8dp" app:layout_constraintEnd_toEndOf="parent"
+                        android:layout_marginEnd="8dp"/>
+            </android.support.constraint.ConstraintLayout>
+
+            <android.support.constraint.ConstraintLayout
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_gravity="center"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    android:id="@+id/cur_perc_layout"
+                    android:visibility="invisible"
+                    app:layout_constraintTop_toTopOf="@+id/upper_top_guideline"
+                    app:layout_constraintVertical_bias="0.5"
+                    app:layout_constraintBottom_toTopOf="@+id/lower_top_guideline">
+
+                <android.support.v7.widget.AppCompatTextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:maxLines="1"
+                        app:autoSizeTextType="uniform"
+                        android:text="@string/bat_perc_placeholder"
+                        android:textColor="@color/colorAccent"
+                        android:id="@+id/cur_perc"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintVertical_bias="0.0" app:layout_constraintStart_toStartOf="parent"
+                        android:layout_marginStart="8dp" app:layout_constraintEnd_toEndOf="parent"
+                        android:layout_marginEnd="8dp"/>
+
+            </android.support.constraint.ConstraintLayout>
+        </android.support.constraint.ConstraintLayout>
+    </com.github.florent37.shapeofview.shapes.CircleView>
+</com.tmc.safecharge.layouts.SquareConstraintLayout>

@@ -28,27 +28,9 @@ class CircularSliderRange : View {
     var circleCenterY: Int = 0
     var circleRadius: Int = 0
 
-    var startThumbImage: Drawable? = null
-    var endThumbImage: Drawable? = null
     var padding: Int = 0
-    var startThumbSize: Int = 0
-        set(thumbSize) {
-            if (thumbSize == THUMB_SIZE_NOT_DEFINED)
-                return
-            field = thumbSize
-        }
-    var endThumbSize: Int = 0
-        set(thumbSize) {
-            if (thumbSize == THUMB_SIZE_NOT_DEFINED)
-                return
-            field = thumbSize
-        }
-
-    var thumbSize = -1
-        set(value){
-            endThumbSize = value
-            startThumbSize = value
-        }
+    var thumbSize: Int = 0
+    var drawThumbSize: Int = 0
 
     var startThumbColor: Int = 0
     var endThumbColor: Int = 0
@@ -138,7 +120,7 @@ class CircularSliderRange : View {
         init(context, attrs, defStyleAttr)
     }
 
-    // common initializer ethod
+    // common initializer method
     @SuppressLint("ObsoleteSdkInt")
     private fun init(context: Context, attrs: AttributeSet?, defStyleAttr: Int) {
         val a = context.obtainStyledAttributes(attrs, R.styleable.CircularSliderRange, defStyleAttr, 0)
@@ -150,16 +132,13 @@ class CircularSliderRange : View {
         startAngle = a.getFloat(R.styleable.CircularSliderRange_start_angle, 60f).toDouble()
         endAngle = a.getFloat(R.styleable.CircularSliderRange_end_angle, 90f).toDouble()
         thumbSize = a.getDimensionPixelSize(R.styleable.CircularSliderRange_thumb_size, 50)
-        startThumbSize = a.getDimensionPixelSize(R.styleable.CircularSliderRange_start_thumb_size, THUMB_SIZE_NOT_DEFINED)
-        endThumbSize = a.getDimensionPixelSize(R.styleable.CircularSliderRange_end_thumb_size, THUMB_SIZE_NOT_DEFINED)
+        drawThumbSize = a.getDimensionPixelSize(R.styleable.CircularSliderRange_draw_thumb_size, thumbSize)
         startThumbColor = a.getColor(R.styleable.CircularSliderRange_start_thumb_color, Color.GRAY)
         endThumbColor = a.getColor(R.styleable.CircularSliderRange_end_thumb_color, Color.GRAY)
         borderThickness = a.getDimensionPixelSize(R.styleable.CircularSliderRange_border_thickness, 20)
         arcDashSize = a.getDimensionPixelSize(R.styleable.CircularSliderRange_arc_dash_size, 60)
         arcColor = a.getColor(R.styleable.CircularSliderRange_arc_color, 0)
         borderColor = a.getColor(R.styleable.CircularSliderRange_border_color, Color.RED)
-        startThumbImage = a.getDrawable(R.styleable.CircularSliderRange_start_thumb_image)
-        endThumbImage = a.getDrawable(R.styleable.CircularSliderRange_end_thumb_image)
 
         // assign padding - check for version because of RTL layout compatibility
         padding = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
@@ -174,22 +153,19 @@ class CircularSliderRange : View {
             return
     }
 
+    override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
+        super.onMeasure(widthMeasureSpec, widthMeasureSpec)
+    }
     /* ***** Setters ***** */
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         // use smaller dimension for calculations (depends on parent size)
         val smallerDim = if (w > h) h else w
 
-        // find circle's rectangle points
-        val largestCenteredSquareLeft = (w - smallerDim) / 2
-        val largestCenteredSquareTop = (h - smallerDim) / 2
-        val largestCenteredSquareRight = largestCenteredSquareLeft + smallerDim
-        val largestCenteredSquareBottom = largestCenteredSquareTop + smallerDim
-
         // save circle coordinates and radius in fields
-        circleCenterX = largestCenteredSquareRight / 2 + (w - largestCenteredSquareRight) / 2
-        circleCenterY = largestCenteredSquareBottom / 2 + (h - largestCenteredSquareBottom) / 2
-        circleRadius = smallerDim / 2 - borderThickness / 2 - padding
+        circleCenterX = w / 2
+        circleCenterY = w / 2
+        circleRadius = smallerDim / 2 - padding - drawThumbSize / 2
 
         // works well for now, should we call something else here?
         super.onSizeChanged(w, h, oldw, oldh)
@@ -199,7 +175,6 @@ class CircularSliderRange : View {
         super.onDraw(canvas)
 
         canvas.rotate(offsetAngle.toFloat(), circleCenterX.toFloat(), circleCenterY.toFloat())
-        println(borderStartAngle to borderEndAngle)
         // outer circle (ring)
         paint.color = borderColor
         paint.style = Paint.Style.STROKE
@@ -231,33 +206,16 @@ class CircularSliderRange : View {
 
 
         canvas.drawArc(arcRectF, startAngle.toFloat(), ((360 + endAngle - startAngle) % 360).toFloat(), false, linePaint)
-        var thumbSize = startThumbSize
-        if (startThumbImage != null) {
-            // draw png
-            startThumbImage!!.setBounds(thumbStartX - thumbSize / 2, thumbStartY - thumbSize / 2, thumbStartX + thumbSize / 2, thumbStartY + thumbSize / 2)
-            startThumbImage!!.draw(canvas)
-        } else {
+
             // draw colored circle
-            paint.color = startThumbColor
-            paint.style = Paint.Style.FILL
-            canvas.drawCircle(thumbStartX.toFloat(), thumbStartY.toFloat(), (thumbSize / 2).toFloat(), paint)
+        paint.color = startThumbColor
+        paint.style = Paint.Style.FILL
+        canvas.drawCircle(thumbStartX.toFloat(), thumbStartY.toFloat(), (drawThumbSize / 2).toFloat(), paint)
 
-            //helper text, used for debugging
-            //linePaint.setStrokeWidth(5);
-            //canvas.drawText(String.format(Locale.US, "%.1f", drawStart), thumbStartX - 20, thumbStartY, linePaint);
-            //canvas.drawText(String.format(Locale.US, "%.1f", drawEnd), thumbEndX - 20, thumbEndY, linePaint);
-        }
+        paint.style = Paint.Style.FILL
+        paint.color = endThumbColor
+        canvas.drawCircle(thumbEndX.toFloat(), thumbEndY.toFloat(), (drawThumbSize / 2).toFloat(), paint)
 
-        thumbSize = endThumbSize
-        if (endThumbImage != null) {
-            // draw png
-            endThumbImage!!.setBounds(thumbEndX - thumbSize / 2, thumbEndY - thumbSize / 2, thumbEndX + thumbSize / 2, thumbEndY + thumbSize / 2)
-            endThumbImage!!.draw(canvas)
-        } else {
-            paint.style = Paint.Style.FILL
-            paint.color = endThumbColor
-            canvas.drawCircle(thumbEndX.toFloat(), thumbEndY.toFloat(), (thumbSize / 2).toFloat(), paint)
-        }
 
     }
 
@@ -276,20 +234,27 @@ class CircularSliderRange : View {
         if (distanceY < 0)
             angle = -angle
 
+        angle = toDrawingAngle(angle)
+        var perc = 0.0
         if (thumb == Thumb.START) {
-            startAngle = (720 + toDrawingAngle(angle)) % 360
-            if(startAngle > endAngle) startAngle = borderStartAngle
+            startAngle = angle
+            if(startAngle > endAngle) {
+                startAngle = borderStartAngle
+            }
+            perc = (startAngle - borderStartAngle) / (borderEndAngle - borderStartAngle)
         } else {
-            endAngle = (720 + toDrawingAngle(angle)) % 360
-            if(startAngle > endAngle) endAngle = borderEndAngle
+            endAngle = angle
+            if(startAngle > endAngle) {
+                endAngle = borderEndAngle
+            }
+            perc = (endAngle - borderStartAngle) / (borderEndAngle - borderStartAngle)
         }
 
         if (onSliderRangeMovedListener != null) {
-
             if (thumb == Thumb.START) {
-                onSliderRangeMovedListener!!.onStartSliderMoved(toDrawingAngle(angle))
+                onSliderRangeMovedListener!!.onStartSliderMoved(perc)
             } else {
-                onSliderRangeMovedListener!!.onEndSliderMoved(toDrawingAngle(angle))
+                onSliderRangeMovedListener!!.onEndSliderMoved(perc)
             }
         }
     }
@@ -323,14 +288,11 @@ class CircularSliderRange : View {
         when (ev.action) {
             MotionEvent.ACTION_DOWN -> {
                 // start oving the thumb (this is the first touch)
-
-                var thumbSize = startThumbSize
                 val isThumbStartPressed = (x < thumbStartX + thumbSize
                         && x > thumbStartX - thumbSize
                         && y < thumbStartY + thumbSize
                         && y > thumbStartY - thumbSize)
 
-                thumbSize = endThumbSize
                 val isThumbEndPressed = (x < thumbEndX + thumbSize
                         && x > thumbEndX - thumbSize
                         && y < thumbEndY + thumbSize
