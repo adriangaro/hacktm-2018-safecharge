@@ -11,6 +11,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import android.nfc.NdefMessage
 import android.nfc.NfcAdapter
 import android.content.Intent
+import android.content.IntentFilter
 import android.graphics.ColorFilter
 import android.graphics.PorterDuff
 import android.support.v4.content.ContextCompat
@@ -19,10 +20,31 @@ import com.tmc.safecharge.widgets.CircularSliderRange
 import com.tmc.safecharge.widgets.ThumbEvent
 import kotlinx.android.synthetic.main.main_content.*
 import kotlinx.android.synthetic.main.battery_circle.*
+import android.os.BatteryManager
+import android.content.BroadcastReceiver
+
+
 
 
 class MainActivity : AppCompatActivity() {
+    private val mBatteryLevelReceiver = object : BroadcastReceiver() {
+        @SuppressLint("SetTextI18n")
+        override fun onReceive(context: Context, intent: Intent) {
 
+            //int rawLevel = intent.getIntExtra("level", -1);
+            val rawLevel = intent.getIntExtra(BatteryManager.EXTRA_LEVEL, -1)
+            //int scale = intent.getIntExtra("scale", -1);
+            val scale = intent.getIntExtra(BatteryManager.EXTRA_SCALE, -1)
+            var level = -1
+            if (rawLevel >= 0 && scale > 0) {
+                level = rawLevel * 100 / scale
+            }
+            bat_perc.text = level.toString() + "%"
+        }
+
+    }
+
+    @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -33,6 +55,7 @@ class MainActivity : AppCompatActivity() {
         battery_empty.background = battery_empty.background.apply { setColorFilter(ContextCompat.getColor(this@MainActivity, R.color.colorPrimary), PorterDuff.Mode.MULTIPLY) }
         tip_icon.background = tip_icon.background.apply { setColorFilter(ContextCompat.getColor(this@MainActivity, R.color.colorPrimary), PorterDuff.Mode.MULTIPLY) }
         top_icon.background = top_icon.background.apply { setColorFilter(ContextCompat.getColor(this@MainActivity, R.color.colorPrimary), PorterDuff.Mode.MULTIPLY) }
+        phone_name.text = android.os.Build.MANUFACTURER + " " + android.os.Build.MODEL
 
         circular.onSliderRangeMovedListener = object : CircularSliderRange.OnSliderRangeMovedListener {
             @SuppressLint("SetTextI18n")
@@ -66,6 +89,10 @@ class MainActivity : AppCompatActivity() {
                     ThumbEvent.THUMB_RELEASED -> R.color.colorPrimary
                 })
             }
+        }
+
+        IntentFilter(Intent.ACTION_BATTERY_CHANGED).let { ifilter ->
+            this@MainActivity.registerReceiver(mBatteryLevelReceiver, ifilter)
         }
     }
 
