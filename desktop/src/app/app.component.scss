@@ -1,0 +1,24 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  margin: 0;
+}
+
+main {
+  flex: 1 1 0;
+}
+
+.desktopView {
+  display: flex;
+
+  app-main-ui {
+    flex: 0 0 400px;
+    height: 100%;
+  }
+
+  app-secondary-ui {
+    flex: 1 1;
+    height: 100%;
+  }
+}

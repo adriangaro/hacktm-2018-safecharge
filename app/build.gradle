@@ -31,6 +31,7 @@ dependencies {
     compile 'com.android.support:support-v4:27.1.1'
     compile 'com.github.florent37:shapeofview:1.0.0'
     compile 'com.github.zcweng:switch-button:0.0.3@aar'
+//    compile 'com.github.douglasjunior.AndroidBluetoothLibrary:BluetoothClassicLibrary:0.3.5'
     testCompile 'junit:junit:4.12'
     androidTestCompile('com.android.support.test.espresso:espresso-core:3.0.2', {
         exclude group: 'com.android.support', module: 'support-annotations'

@@ -1,7 +1,12 @@
 {
   "PAGES": {
       "HOME": {
-          "TITLE": "App works !"
+          "TITLE": "SafeCharge",
+          "HOME": "Home",
+          "TEST2": "Test"
+      },
+      "MAIN": {
+          "PHONE_NAME_PLACEHOLDER": "Daniel's Phone"
       }
   }
 }

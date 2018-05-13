@@ -18,7 +18,14 @@ import { ElectronService } from './providers/electron.service';
 import { WebviewDirective } from './directives/webview.directive';
 
 import { AppComponent } from './app.component';
-import { HomeComponent } from './components/home/home.component';
+import { ToolbarComponent } from './components/toolbar/toolbar.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { LayoutModule } from '@angular/cdk/layout';
+import { MatToolbarModule, MatButtonModule, MatSidenavModule, MatIconModule, MatListModule, MatTabsModule } from '@angular/material';
+import { MainUiComponent } from './components/main-ui/main-ui.component';
+import { SecondaryUiComponent } from './components/secondary-ui/secondary-ui.component';
+import { BatteryCircleComponent } from './components/battery-circle/battery-circle.component';
+import { CircularRangeSliderComponent } from './components/circular-range-slider/circular-range-slider.component';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -28,8 +35,12 @@ export function HttpLoaderFactory(http: HttpClient) {
 @NgModule({
   declarations: [
     AppComponent,
-    HomeComponent,
-    WebviewDirective
+    ToolbarComponent,
+    WebviewDirective,
+    MainUiComponent,
+    SecondaryUiComponent,
+    BatteryCircleComponent,
+    CircularRangeSliderComponent,
   ],
   imports: [
     BrowserModule,
@@ -42,7 +53,16 @@ export function HttpLoaderFactory(http: HttpClient) {
         useFactory: (HttpLoaderFactory),
         deps: [HttpClient]
       }
-    })
+    }),
+    BrowserAnimationsModule,
+    LayoutModule,
+    MatToolbarModule,
+    MatButtonModule,
+    MatSidenavModule,
+    MatIconModule,
+    MatListModule,
+    MatTabsModule
+
   ],
   providers: [ElectronService],
   bootstrap: [AppComponent]

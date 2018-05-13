@@ -160,12 +160,11 @@ class CircularSliderRange : View {
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         // use smaller dimension for calculations (depends on parent size)
-        val smallerDim = if (w > h) h else w
 
         // save circle coordinates and radius in fields
         circleCenterX = w / 2
         circleCenterY = w / 2
-        circleRadius = smallerDim / 2 - padding - drawThumbSize / 2
+        circleRadius = w / 2 - padding - drawThumbSize / 2
 
         // works well for now, should we call something else here?
         super.onSizeChanged(w, h, oldw, oldh)
@@ -339,6 +338,14 @@ class CircularSliderRange : View {
 
         invalidate()
         return true
+    }
+
+    fun min(): Double {
+        return (startAngle - borderStartAngle) / (borderEndAngle - borderStartAngle)
+    }
+
+    fun max(): Double {
+        return (endAngle - borderStartAngle) / (borderEndAngle - borderStartAngle)
     }
 
     companion object {

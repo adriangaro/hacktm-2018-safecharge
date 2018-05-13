@@ -1,0 +1,18 @@
+<div #startThumb
+  [style.backgroundColor]="startThumbColor"
+  [class]="startThumbColor"></div>
+<div #endThumb
+     [style.backgroundColor]="endThumbColor"
+     [class]="endThumbColor"></div>
+<!--<div-->
+     <!--[style.width]="circleRadius * 2 + 'px'" [style.height]="circleRadius * 2 + 'px'"-->
+     <!--[style.borderRadius]="circleRadius + 'px'" [style.backgroundColor]="endThumbColor"-->
+     <!--[class]="endThumbColor"-->
+     <!--[style.position]="'absolute'"-->
+     <!--[style.left]="centerX - circleRadius + 'px'"-->
+     <!--[style.top]="centerY - circleRadius + 'px'"></div>-->
+<div #borderArc [style.backgroundColor]="borderColor"
+     [class]="borderColor"></div>
+<div #selectedArc [style.backgroundColor]="arcColor"
+     [class]="arcColor"></div>
+<canvas #canvas [width]="circleRadius * 2" [height]="circleRadius * 2"  [style.width]="circleRadius * 2 + 'px'" [style.height]="circleRadius * 2 + 'px'"></canvas>

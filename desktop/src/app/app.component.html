@@ -1,1 +1,13 @@
-<router-outlet></router-outlet>
+<header>
+  <app-toolbar></app-toolbar>
+</header>
+<main *ngIf="(isHandset | async).matches else desktopView" >
+  <router-outlet></router-outlet>
+</main>
+
+<ng-template #desktopView>
+  <main class="desktopView">
+    <app-main-ui class="mat-elevation-z2"></app-main-ui>
+    <app-secondary-ui></app-secondary-ui>
+  </main>
+</ng-template>

@@ -1,7 +1,38 @@
 /* You can add global styles to this file, and also import other style files */
-html, body {
-  margin: 0;
-  padding: 0;
 
-  height: 100%;
+
+html, body {
+  width:100%;
+  height:100%;
+  padding: 0;
+  margin: 0;
+}
+
+body { display: flex; flex-direction: column; }
+
+div {
+  .logo {
+    mask: url("assets/imgs/logo.svg") no-repeat center;
+    -webkit-mask: url("assets/imgs/logo.svg") no-repeat center;
+  }
+
+  .small-logo {
+    mask: url("assets/imgs/small_logo.svg") no-repeat center;
+    -webkit-mask: url("assets/imgs/small_logo.svg") no-repeat center;
+  }
+
+  .alert-icon {
+    mask: url("assets/imgs/alert_icon.svg") no-repeat center;
+    -webkit-mask: url("assets/imgs/alert_icon.svg") no-repeat center;
+  }
+
+  .battery-empty {
+    mask: url("assets/imgs/battery_empty.svg") no-repeat center;
+    -webkit-mask: url("assets/imgs/battery_empty.svg") no-repeat center;
+  }
+
+  .battery-full {
+    mask: url("assets/imgs/battery_full.svg") no-repeat center;
+    -webkit-mask: url("assets/imgs/battery_full.svg") no-repeat center;
+  }
 }
